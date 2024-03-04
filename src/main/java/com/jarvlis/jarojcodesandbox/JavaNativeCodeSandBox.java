@@ -144,9 +144,7 @@ public class JavaNativeCodeSandBox implements CodeSandBox {
             System.out.println("删除" + (del ? "成功" : "失败"));
         }
 
-        // 6.错误处理，提升程序健壮性
-
-        return null;
+        return executeCodeResponse;
     }
 
     /**
