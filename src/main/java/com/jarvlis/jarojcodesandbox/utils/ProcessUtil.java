@@ -3,8 +3,12 @@ package com.jarvlis.jarojcodesandbox.utils;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.StrUtil;
 import com.jarvlis.jarojcodesandbox.model.ExecuteMessage;
+import io.netty.util.internal.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProcessUtil {
     /**
@@ -28,35 +32,35 @@ public class ProcessUtil {
             // 分批获取程序正常输出
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
             String compileOutputLine;
-            StringBuilder compileOutputBuilder = new StringBuilder();
+            List<String> outputStrList = new ArrayList<>();
             // 逐行读取
             while ((compileOutputLine = bufferedReader.readLine()) != null) {
-                compileOutputBuilder.append(compileOutputLine).append("\n");
+                outputStrList.add(compileOutputLine);
             }
-            System.out.println(compileOutputBuilder);
-            executeMessage.setMessage(compileOutputBuilder.toString());
+            executeMessage.setMessage(StringUtils.join(outputStrList, "\n"));
 
         } else {
             System.out.println(opName + "失败, 错误码：" + exitValue);
             // 分批获取程序正常输出
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
             String compileOutputLine;
-            StringBuilder compileOutputBuilder = new StringBuilder();
+            List<String> outputStrList = new ArrayList<>();
             // 逐行读取
             while ((compileOutputLine = bufferedReader.readLine()) != null) {
-                compileOutputBuilder.append(compileOutputLine).append("\n");
+                outputStrList.add(compileOutputLine);
             }
-            executeMessage.setMessage(compileOutputBuilder.toString());
+            executeMessage.setMessage(StringUtils.join(outputStrList, "\n"));
             // 分批获取程序错误输出
             BufferedReader errorBufferedReader = new BufferedReader(new InputStreamReader(runProcess.getErrorStream()));
             String errorcompileOutputLine;
-            StringBuilder compileErrorBuilder = new StringBuilder();
 
-            // 逐行读取错误信息
+            List<String> outputErrStrList = new ArrayList<>();
+            // 逐行读取
             while ((errorcompileOutputLine = errorBufferedReader.readLine()) != null) {
-                compileErrorBuilder.append(errorcompileOutputLine).append("\n");
+                outputErrStrList.add(errorcompileOutputLine);
             }
-            executeMessage.setErrorMessage(compileErrorBuilder.toString());
+            executeMessage.setErrorMessage(StringUtils.join(outputErrStrList, "\n"));
+
         }
         stopWatch.stop();
         executeMessage.setTime(stopWatch.getLastTaskTimeMillis());
@@ -65,7 +69,6 @@ public class ProcessUtil {
 
     public static ExecuteMessage runinteractProcessAndGetMsg(Process runProcess, String opName, String args) throws InterruptedException, IOException {
         ExecuteMessage executeMessage = new ExecuteMessage();
-
 
         // 向控制台输入程序
         OutputStream outputStream = runProcess.getOutputStream();
