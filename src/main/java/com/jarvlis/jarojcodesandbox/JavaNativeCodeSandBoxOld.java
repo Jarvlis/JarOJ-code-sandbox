@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.dfa.WordTree;
+import com.jarvlis.jarojcodesandbox.constant.ResponseStatus;
 import com.jarvlis.jarojcodesandbox.model.ExecuteCodeRequest;
 import com.jarvlis.jarojcodesandbox.model.ExecuteCodeResponse;
 import com.jarvlis.jarojcodesandbox.model.ExecuteMessage;
@@ -114,7 +115,7 @@ public class JavaNativeCodeSandBoxOld implements CodeSandBox {
             if (StrUtil.isNotEmpty(executeMessage.getErrorMessage())) {
                 executeCodeResponse.setMessage(errorMessage);
                 // 执行中存在错误
-                executeCodeResponse.setStatus(3);
+                executeCodeResponse.setStatus(ResponseStatus.ERROR.getValue());
                 break;
             }
             outputList.add(executeMessage.getMessage());
@@ -125,7 +126,7 @@ public class JavaNativeCodeSandBoxOld implements CodeSandBox {
         }
         executeCodeResponse.setOutputLists(outputList);
         if (outputList.size() == executeMessageList.size()) {
-            executeCodeResponse.setStatus(1);
+            executeCodeResponse.setStatus(ResponseStatus.SUCCESS.getValue());
         }
         JudgeInfo judgeInfo = new JudgeInfo();
         judgeInfo.setTime(maxTime);
@@ -133,7 +134,6 @@ public class JavaNativeCodeSandBoxOld implements CodeSandBox {
         executeCodeResponse.setJudgeInfo(judgeInfo);
         // 设置内存消耗信息
 //        judgeInfo.setMemory();
-
 
         // 5. 文件清理
         if (userCodeFile.getParentFile() != null) {

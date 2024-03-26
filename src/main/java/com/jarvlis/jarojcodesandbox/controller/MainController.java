@@ -1,12 +1,10 @@
 package com.jarvlis.jarojcodesandbox.controller;
 
+import com.jarvlis.jarojcodesandbox.JavaDockerCodeSandBox;
 import com.jarvlis.jarojcodesandbox.JavaNativeCodeSandbox;
 import com.jarvlis.jarojcodesandbox.model.ExecuteCodeRequest;
 import com.jarvlis.jarojcodesandbox.model.ExecuteCodeResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,10 +21,8 @@ public class MainController {
     @Resource
     private JavaNativeCodeSandbox javaNativeCodeSandbox;
 
-    @GetMapping("/health")
-    public String health() {
-        return "OK";
-    }
+    @Resource
+    private JavaDockerCodeSandBox javaDockerCodeSandBox;
 
     /**
      * 执行代码

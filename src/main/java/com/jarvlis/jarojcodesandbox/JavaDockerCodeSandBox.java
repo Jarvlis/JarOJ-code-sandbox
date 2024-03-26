@@ -28,7 +28,7 @@ public class JavaDockerCodeSandBox extends JavaCodeSandboxTemplate {
 
     private static final long TIME_OUT = 5000L;
 
-    private static final boolean FIRST_INIT = true;
+    private static boolean FIRST_INIT = true;
 
     public static void main(String[] args) {
         JavaDockerCodeSandBox javaNativeCodeSandBox = new JavaDockerCodeSandBox();
@@ -74,6 +74,7 @@ public class JavaDockerCodeSandBox extends JavaCodeSandboxTemplate {
                 throw new RuntimeException(e);
             }
             System.out.println("下载完成");
+            FIRST_INIT = false;
         }
 
 
